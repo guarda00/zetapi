@@ -1,0 +1,33 @@
+# =========================
+# Drupal + Composer
+# =========================
+
+# Ignore Composer dependencies
+/vendor/
+
+# Ignore core and contrib modules/themes (managed by Composer)
+/web/core/
+/web/modules/contrib/
+/web/themes/contrib/
+
+# Ignore files directory (user uploads, cache)
+web/sites/*/files/
+
+# =========================
+# Lando
+# (No ignoramos .lando.yml para que suba al repo)
+.lando.local.yml
+.lando.yml.bak
+.lando.yml~
+
+# =========================
+# IDE / Editor files
+# (No ignoramos .vscode para que suba al repo)
+.idea/
+*.iml
+
+# =========================
+# OS generated files
+# =========================
+.DS_Store
+Thumbs.db
