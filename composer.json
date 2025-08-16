@@ -22,7 +22,8 @@
         "drupal/core-recommended": "^11"
     },
     "require-dev": {
-        "drupal/core-dev": "^11"
+        "drupal/core-dev": "^11",
+        "drush/drush": "^13@dev"
     },
     "conflict": {
         "drupal/drupal": "*"

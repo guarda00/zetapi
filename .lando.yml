@@ -2,3 +2,8 @@ name: zetapi
 recipe: drupal11
 config:
   webroot: web
+tooling:
+  drush:
+    service: appserver
+    cmd: vendor/bin/drush
+
