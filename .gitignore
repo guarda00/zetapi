@@ -2,6 +2,12 @@
 # Drupal + Composer
 # =========================
 
+# Ignorar backups de base de datos
+*.sql
+*.sql.gz
+*.dump
+*.backup
+
 # Ignore Composer dependencies
 /vendor/
 
