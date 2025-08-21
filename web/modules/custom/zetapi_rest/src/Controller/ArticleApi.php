@@ -6,18 +6,17 @@ namespace Drupal\zetapi_rest\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Returns responses for Zetapi Rest routes.
  */
-class ArticleApi extends ControllerBase {
+final class ArticleApi extends ControllerBase {
 
   /**
    * El servicio de logger.
-   *
-   * @var \Psr\Log\LoggerInterface
    */
-  protected $logger;
+  protected LoggerInterface $logger;
 
   /**
    * Constructor.
@@ -29,20 +28,25 @@ class ArticleApi extends ControllerBase {
   /**
    * Método create() para que Drupal inyecte el servicio.
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): static {
     return new static(
-      $container->get('logger.factory')
+      $container->get('logger.factory')->get('zetapi_rest'),
     );
   }
 
   /**
    * Builds the response.
+   *
+   * @return array
+   *   Render array for the page.
    */
   public function __invoke(): array {
+    $this->logger->info('ArticleApi endpoint accessed.');
 
+    $build = [];
     $build['content'] = [
-      '#type' => 'item',
       '#markup' => $this->t('It works!'),
+      '#type' => 'item',
     ];
 
     return $build;
