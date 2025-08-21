@@ -1,0 +1,14 @@
+uuid: 656775f3-aa59-4278-99ae-3c651fb585b1
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.api_zetapi
+  module:
+    - user
+id: user_remove_role_action.api_zetapi
+label: 'Remove the api_zetapi role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: api_zetapi

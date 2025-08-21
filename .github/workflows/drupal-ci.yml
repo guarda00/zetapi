@@ -1,0 +1,58 @@
+# Nombre del workflow, se verá en la pestaña "Actions" en GitHub
+name: Drupal Code Quality
+
+# Cuándo se ejecuta este workflow:
+on:
+  pull_request:          # 👉 Cada vez que se abra o actualice un Pull Request
+    branches:            # Solo en PRs hacia estas ramas
+      - main
+      - master
+      - develop
+
+jobs:
+  drupal-code-checks:    # Nombre del "job" (tarea) que se ejecuta
+    runs-on: ubuntu-latest   # El job se ejecuta en un servidor Linux Ubuntu que provee GitHub
+
+    steps:   # Cada acción a ejecutar dentro del job
+      # Paso 1: Descargar el código del repositorio
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Paso 2: Instalar PHP en la máquina del workflow
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2   # Acción muy usada para configurar PHP
+        with:
+          php-version: '8.3'              # 👉 Aquí definimos la versión de PHP (tu proyecto usa 8.3)
+          extensions: mbstring, xml, ctype, iconv, tokenizer, curl, dom, gd, intl, pdo_mysql, simplexml, zip
+          coverage: none                  # No necesitamos herramientas de cobertura (como Xdebug)
+
+      # Paso 3: Validar sintaxis PHP
+      - name: Validate PHP syntax
+        run: |
+          # Busca todos los archivos PHP en los módulos y temas custom,
+          # y pasa cada archivo por `php -l` (lint) para revisar que no tenga errores de sintaxis
+          find web/modules/custom web/themes/custom -type f -name "*.php" -print0 | xargs -0 -n1 php -l
+
+      # Paso 4: Instalar dependencias del proyecto con Composer
+      - name: Install dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist
+
+      # Paso 5: Instalar herramientas de análisis de código
+      - name: Install PHP CodeSniffer + Drupal Coder
+        run: |
+          # Instala PHP_CodeSniffer y los estándares de Drupal como dependencias de desarrollo
+          composer require --dev squizlabs/php_codesniffer drupal/coder dealerdirect/phpcodesniffer-composer-installer
+          # Configura phpcs para que reconozca los estándares de Drupal
+          phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
+
+      # Paso 6: Ejecutar análisis con estándar "Drupal"
+      - name: Run PHPCS with Drupal standard
+        run: |
+          # Revisa que el código cumpla con los estándares de codificación Drupal
+          vendor/bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme web/modules/custom web/themes/custom
+
+      # Paso 7: Ejecutar análisis con estándar "DrupalPractice"
+      - name: Run PHPCS with DrupalPractice standard
+        run: |
+          # Revisa mejores prácticas recomendadas para proyectos Drupal
+          vendor/bin/phpcs --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme web/modules/custom web/themes/custom
