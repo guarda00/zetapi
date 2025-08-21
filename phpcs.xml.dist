@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="DrupalProject">
+  <description>Drupal + Slevomat coding standards</description>
+
+  <!-- Estándares a usar -->
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
+  <rule ref="SlevomatCodingStandard"/>
+
+  <!-- Archivos y carpetas a incluir -->
+  <file>modules/custom</file>
+  <file>themes/custom</file>
+  <file>scripts</file>
+
+  <!-- Excluir vendor y otras carpetas innecesarias -->
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+  <exclude-pattern>*/node_modules/*</exclude-pattern>
+  <exclude-pattern>*/core/*</exclude-pattern>
+
+  <!-- Opcional: ajustar severidad -->
+  <arg name="severity" value="5"/>
+</ruleset>
