@@ -43,7 +43,7 @@ jobs:
           # Instala PHP_CodeSniffer y los estándares de Drupal como dependencias de desarrollo
           composer require --dev squizlabs/php_codesniffer drupal/coder dealerdirect/phpcodesniffer-composer-installer
           # Configura phpcs para que reconozca los estándares de Drupal
-          phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
+          vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
 
       # Paso 6: Ejecutar análisis con estándar "Drupal"
       - name: Run PHPCS with Drupal standard
