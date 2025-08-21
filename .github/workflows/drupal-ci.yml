@@ -1,0 +1,55 @@
+name: Drupal Code Quality
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+
+jobs:
+  drupal-code-checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Descargar el código
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2️⃣ Configurar PHP
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, ctype, iconv, tokenizer, curl, dom, gd, intl, pdo_mysql, simplexml, zip
+          coverage: none
+
+      # 3️⃣ Validar sintaxis PHP
+      - name: Validate PHP syntax
+        run: |
+          find web/modules/custom web/themes/custom -type f -name "*.php" -print0 | xargs -0 -n1 php -l
+
+      # 4️⃣ Instalar dependencias del proyecto
+      - name: Install project dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist
+
+      # 5️⃣ Instalar PHPCS + Drupal Coder + Slevomat y configurar paths
+      - name: Install PHPCS + Drupal Coder + Slevomat
+        run: |
+          composer require --dev squizlabs/php_codesniffer drupal/coder dealerdirect/phpcodesniffer-composer-installer slevomat/coding-standard
+          vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer,vendor/slevomat/coding-standard
+
+      # 6️⃣ Ejecutar análisis con Drupal standard
+      - name: Run PHPCS with Drupal standard
+        run: |
+          vendor/bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme web/modules/custom web/themes/custom
+
+      # 7️⃣ Ejecutar análisis con DrupalPractice standard
+      - name: Run PHPCS with DrupalPractice standard
+        run: |
+          vendor/bin/phpcs --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme web/modules/custom web/themes/custom
+
+      # 8️⃣ Ejecutar análisis con Slevomat (opcional si quieres reglas extra)
+      - name: Run PHPCS with Slevomat standard
+        run: |
+          vendor/bin/phpcs --standard=SlevomatCodingStandard --extensions=php,module,inc,install,test,profile,theme web/modules/custom web/themes/custom

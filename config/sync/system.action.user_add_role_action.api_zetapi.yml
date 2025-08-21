@@ -1,0 +1,14 @@
+uuid: 92bf5360-0557-4fc6-9af3-aba58195fcfe
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.api_zetapi
+  module:
+    - user
+id: user_add_role_action.api_zetapi
+label: 'Add the api_zetapi role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: api_zetapi
