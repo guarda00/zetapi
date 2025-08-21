@@ -1,12 +1,11 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Drupal\zetapi_rest\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Returns responses for Zetapi Rest routes.
@@ -30,14 +29,14 @@ final class ArticleApi extends ControllerBase {
    */
   public static function create(ContainerInterface $container): static {
     return new static(
-      $container->get('logger.factory')->get('zetapi_rest'),
+      $container->get('logger.factory')->get('zetapi_rest')
     );
   }
 
   /**
    * Builds the response.
    *
-   * @return array
+   * @return array<string, mixed>
    *   Render array for the page.
    */
   public function __invoke(): array {
