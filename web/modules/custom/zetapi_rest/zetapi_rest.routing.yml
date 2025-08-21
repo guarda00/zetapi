@@ -1,0 +1,7 @@
+article_api:
+  path: '/zetapi-rest/article-api'
+  defaults:
+    _title: 'Article Api'
+    _controller: '\Drupal\zetapi_rest\Controller\ArticleApi'
+  requirements:
+    _permission: 'access content'
