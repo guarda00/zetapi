@@ -20,3 +20,4 @@
   <!-- Opcional: ajustar severidad -->
   <arg name="severity" value="5"/>
 </ruleset>
+
